@@ -12,7 +12,7 @@ while(loop):
 	nombre = input("Ingrese su nombre: ")
 	sexo = input("Ingrese su genero, femenino o masculino: ")
 
-	if((nombre[0].upper() in 'A'...'L') and (sexo.upper() == 'FEMENINO')) or ((nombre[0].upper() in 'O'...'Z') and (sexo.upper() == 'MASCULINO')):
+	if((((nombre[0].upper() < 'M') and (nombre[0].upper() >= 'A')) and (sexo.upper() == 'FEMENINO')) or (((nombre[0].upper() > 'N') and (nombre[0].upper() <= 'Z')) and (sexo.upper() == 'MASCULINO'))):
 		print("Usted pertenece al Grupo A!")
 	else:
 		print("Usted pertenece al Grupo B!")
