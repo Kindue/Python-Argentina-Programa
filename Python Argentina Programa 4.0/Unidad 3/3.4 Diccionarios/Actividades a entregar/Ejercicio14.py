@@ -25,8 +25,8 @@ for i in range(k):
 	valor = input("Ingrese su valor asociado: ")
 	b[clave] = valor
 
-a_aux = set(a)
-b_aux = set(b)
+a_aux = set(a.keys())
+b_aux = set(b.keys())
 
 u = a_aux.union(b_aux)
 print("La union de las claves de a con las claves de b forman el siguiente conjunto")
