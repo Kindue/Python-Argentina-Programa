@@ -41,6 +41,7 @@ for i in range(3):
 #8   .   10   .   41
 
 
+#Explicacion del programa
 #El programa utiliza la funcion coordenadaZ para crear una variable z segun los valores de x e y
 #ingresados en el programa principal. La salida muestra como progresan las variables x, z e y
 #a lo largo de 3 iteraciones. Cabe resaltar que las variables x e y solamente cambian con las asignaciones
