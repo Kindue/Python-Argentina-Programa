@@ -6,31 +6,27 @@
 
 def crearInscripcion(fecha, alumno, materia, profesor, curso, division):
 	return {"fecha": fecha, "alumno": alumno, "materia": materia, "profesor": profesor, \
-	"curso": str(curso), "division": str(division), "nota": "-1"}
-
-def toString(inscripcion):
-	return (inscripcion["fecha"] + "," + inscripcion["alumno"] + "," + inscripcion["materia"] + "," +\
-		inscripcion["profesor"] + "," + inscripcion["curso"] + "," + inscripcion["division"] + "," + inscripcion["nota"])
+		"curso": str(curso), "division": str(division), "nota": -1}
 
 def getFecha(inscripcion):
 	return inscripcion["fecha"]
 
-	def getAlumno(inscripcion):
+def getAlumno(inscripcion):
 	return inscripcion["alumno"]
 
-	def getMateria(inscripcion):
+def getMateria(inscripcion):
 	return inscripcion["materia"]
 
-	def getProfesor(inscripcion):
+def getProfesor(inscripcion):
 	return inscripcion["profesor"]
 
-	def getCurso(inscripcion):
+def getCurso(inscripcion):
 	return inscripcion["Curso"]
 
-	def getDivision(inscripcion):
+def getDivision(inscripcion):
 	return inscripcion["division"]
 
-	def getNota(inscripcion):
+def getNota(inscripcion):
 	return inscripcion["nota"]
 
 def setFecha(inscripcion, nuevaFecha):

@@ -24,14 +24,15 @@ while(loop):
 					dicAux[palabra.upper()] += 1
 
 		for i in range(5):
-			cant = 0
-			mayor = ""
-			for pal in dicAux.keys():
-				if(dicAux[pal] >= cant):
-					mayor = pal
-					cant = dicAux[pal]
-			dicAux.pop(mayor)
-			print("La palabra", mayor, "se repite", cant,"veces.")
+			if(len(dicAux) > 0):
+				cant = 0
+				mayor = ""
+				for pal in dicAux.keys():
+					if(dicAux[pal] >= cant):
+						mayor = pal
+						cant = dicAux[pal]
+				dicAux.pop(mayor)
+				print(f"La palabra '{mayor}' se repite {cant} veces.")
 
 		loop = False
 	except ValueError:
