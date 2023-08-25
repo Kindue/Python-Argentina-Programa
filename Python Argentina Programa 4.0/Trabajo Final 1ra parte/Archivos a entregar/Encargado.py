@@ -21,7 +21,8 @@ def setDNI(encargado, nuevoDNI):
 
 def incorporarInscripcion(fecha, alumno, materia, profesor, curso, division, dicInscripciones):
 	nuevaInscripcion = Inscripcion.crearInscripcion(fecha, alumno, materia, profesor, curso, division)
-	dicInscripciones[fecha + alumno + materia] = nuevaInscripcion
+	if(nuevaInscripcion not in dicInscripciones.values()):
+		dicInscripciones[fecha + alumno + materia] = nuevaInscripcion
 	
 def eliminarInscripcion(inscripcion, dicInscripciones):
 	dicInscripciones.pop(Inscripcion.getFecha(inscripcion) + \

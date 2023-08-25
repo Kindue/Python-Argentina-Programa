@@ -48,4 +48,4 @@ def setDivision(inscripcion, nuevaDivision):
 	inscripcion["division"] = nuevaDivision
 
 def setNota(inscripcion, nuevaNota):
-	inscripcion["nota"] = nuevaNota
+	inscripcion["nota"] = int(nuevaNota)

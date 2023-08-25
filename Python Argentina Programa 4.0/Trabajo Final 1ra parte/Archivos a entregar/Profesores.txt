@@ -1,0 +1,26 @@
+Emiliano Martinez,Historia,5,2
+Franco Armani,Lengua,5,2
+Geronimo Rulli,Matematica,5,2
+Cristian Romero,Geografia,5,2
+Nicolas Otamendi,Quimica,5,2
+Nahuel Molina,Fisica,5,2
+Marcos Acuña,Historia,4,1
+German Pezzella,Lengua,4,1
+Lisandro Martinez,Matematica,4,1
+Gonzalo Montiel,Geografia,4,1
+Nicolas Tagliafico,Quimica,4,1
+Juan Foyth,Fisica,4,1
+Rodrigo De Paul,Historia,3,2
+Leandro Paredes,Lengua,3,2
+Giovani Lo Celso,Matematica,3,2
+Alejandro Gomez,Geografia,3,2
+Guido Rodriguez,Quimica,3,2
+Alexis Mac Allister,Fisica,3,2
+Enzo Fernandez,Historia,2,1
+Exequiel Palacios,Lengua,2,1
+Lionel Messi,Matematica,2,1
+Lautaro Martinez,Geografia,2,1
+Angel Di Maria,Quimica,2,1
+Julian Alvarez,Fisica,2,1
+Paulo Dybala,Ingles,5,2
+Angel Correa,Ingles,2,1
