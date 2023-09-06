@@ -21,6 +21,29 @@ class ContadorLimitado:
     def incrementarValor(self):
         if(self.vActual < self.vLimite):
             self.vActual += 1
+        else:
+            raise ValueError("El valor actual no puede superar al valor limite!")
 
     def __repr__(self):
-        return f"ContadorLimitado({self.vActual}, {self.vLimite})"
+        return (f"ContadorLimitado({self.vActual}, {self.vLimite})")
+    
+    def __str__(self):
+        return repr(self)
+   
+try:
+    print("Ingrese un valor inicial del contador:")
+    vInicial = int(input())
+    print("Ingrese el valor maximo del contador:")
+    vMaximo = int(input())
+except ValueError:
+    print("Ingreso una entrada no valida!")
+
+try:
+    contador = ContadorLimitado(vMaximo, vInicial)
+    for num in range(vMaximo):
+        print(contador)
+        contador.incrementarValor()
+
+    contador.incrementarValor()
+except ValueError:
+    print("No puedo seguir aumentando el valor")
