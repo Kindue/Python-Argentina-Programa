@@ -38,7 +38,7 @@ class MatrizCuadrada:
         matrizResultado = MatrizCuadrada(self._tamaño)
         for i in range(self._tamaño):
             for j in range(self._tamaño):
-                matrizResultado[i][j] = self._matriz[i][j] + matrizAux[i][j]
+                matrizResultado._matriz[i][j] = self._matriz[i][j] + matrizAux._matriz[i][j]
         return matrizResultado
     
     def __sub__(self, matrizAux):
@@ -47,7 +47,7 @@ class MatrizCuadrada:
         matrizResultado = MatrizCuadrada(self._tamaño)
         for i in range(self._tamaño):
             for j in range(self._tamaño):
-                matrizResultado[i][j] = self._matriz[i][j] - matrizAux[i][j]
+                matrizResultado[i][j] = self._matriz[i][j] - matrizAux._matriz[i][j]
         return matrizResultado
     
     def __str__(self):
@@ -55,8 +55,8 @@ class MatrizCuadrada:
         for i in range(self._tamaño):
             matrizSTR += "| "
             for j in range(self._tamaño):
-                matrizSTR += self._matriz[i][j] + " "
-            matrizSTR += " |"
+                matrizSTR += f"{self._matriz[i][j]}  "
+            matrizSTR += " |\n"
         return matrizSTR
     
 
@@ -94,7 +94,7 @@ while(loop):
         print("Ingrese el tamaño de filas que quiere tener la nueva matriz")
         try:
             tamaño = int(input())
-        except ValueError():
+        except TypeError():
             print("Error al ingresar el tamaño de filas")
         else:
             nuevaMatriz = MatrizCuadrada(tamaño)
@@ -119,7 +119,7 @@ while(loop):
         clave1 = input()
         print("Ingrese la clave asociada a la segunda matriz a restar:")
         clave2 = input()
-        matrizResultado = dicMatrices[clave1] + dicMatrices[clave2]
+        matrizResultado = dicMatrices[clave1] - dicMatrices[clave2]
         print("El resultado de la resta de las dos matrices es el siguiente:")
         print(matrizResultado)
         print("Desea guardar el resultado? Ingrese 0 para guardar, cualquier otra tecla para volver al menu principal")
@@ -130,5 +130,7 @@ while(loop):
             dicMatrices[clave] = matrizResultado
     elif(op == '4'):
         for key in dicMatrices.keys():
-            print(key + "  :  " + dicMatrices[key])
-        
+            print(key + "  :  ")
+            print(dicMatrices[key])
+    else:
+        print("Opcion Invalida!")

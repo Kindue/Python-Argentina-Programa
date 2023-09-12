@@ -18,3 +18,5 @@ carlos[1] = 69
 carlos.append('Marcos')
 
 print(carlos)
+
+#Ahora Carlos se llama Fernando que tiene 69 años y ademas 
