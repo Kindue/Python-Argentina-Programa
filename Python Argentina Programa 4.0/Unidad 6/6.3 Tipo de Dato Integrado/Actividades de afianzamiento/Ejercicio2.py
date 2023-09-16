@@ -35,9 +35,9 @@ class Estudiante:
     def setCarrera(self, nuevo):
         self.carrera = nuevo
 
-    nombre = property(fget= getNombre, fset= setNombre)
-    edad = property(fget= getEdad, fset= setEdad)
-    carrera = property(fget= getCarrera, fset= setCarrera)
+    nombre = property(fget= getNombre, fset= setNombre, fdel= None, doc="")
+    edad = property(fget= getEdad, fset= setEdad, fdel= None, doc="")
+    carrera = property(fget= getCarrera, fset= setCarrera, fdel= None, doc="")
 
     def __repr__(self):
         aRet = f"Estudiante: \n Nombre: {self.nombre} Edad: {self.edad} Carrera: {self.carrera}"
@@ -63,3 +63,14 @@ class Estudiante:
     
     def __ge__(self,other):
         return (self.nombre >= other.nombre and self.edad >= other.edad and self.carrera >= other.carrera)
+    
+
+carlos = Estudiante("Carlos", 15, "Ing. Quimico")
+carlitos = Estudiante("Carlos", 15, "Ing. Quimico")
+
+dicEstudiante = {}
+
+dicEstudiante[carlos] = 1
+print(dicEstudiante)
+dicEstudiante[carlitos] = 2
+print(dicEstudiante)
