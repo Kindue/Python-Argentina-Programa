@@ -11,7 +11,7 @@ def getNombre(encargado):
 	return encargado["nombre"]
 
 def getDNI(encargado):
-	return encarado["dni"]
+	return encargado["dni"]
 
 def setNombre(encargado, nuevoNombre):
 	encargado["nombre"] = nuevoNombre
