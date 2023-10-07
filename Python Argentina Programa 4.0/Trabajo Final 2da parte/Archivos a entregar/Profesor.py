@@ -6,35 +6,39 @@
 
 import Inscripcion
 
-def crearProfesor(nombre, materia, curso, division):
-	return {"nombre": nombre, "materia": materia, "curso": curso, "division": division}
+class Profesor:
+	def __init__(self, nombre, materia, curso, division):
+		self._nombre = nombre
+		self._materia = materia
+		self._curso = curso
+		self._division = division
 
-def getNombre(profesor):
-	return profesor["nombre"]
+	def getNombre(self):
+		return self._nombre
 
-def getMateria(profesor):
-	return profesor["materia"]
+	def getMateria(self):
+		return self._materia
 
-def getCurso(profesor):
-	return profesor["curso"]
+	def getCurso(self):
+		return self._curso
 
-def getDivision(profesor):
-	return profesor["division"]
+	def getDivision(self):
+		return self._division
 
-def setNombre(profesor, nuevoNombre):
-	profesor["nombre"] = nuevoNombre
+	def setNombre(self, nuevoNombre):
+		self._nombre = nuevoNombre
 
-def setMateria(profesor, nuevaMateria):
-	profesor["materia"] = nuevaMateria
+	def setMateria(self, nuevaMateria):
+		self._materia = nuevaMateria
 
-def setCurso(profesor, nuevoCurso):
-	profesor["curso"] = nuevoCurso
+	def setCurso(self, nuevoCurso):
+		self._curso = nuevoCurso
 
-def setDivision(profesor, nuevaDivision):
-	profesor["division"] = nuevaDivision
+	def setDivision(self, nuevaDivision):
+		self._division = nuevaDivision
 
-def modificarNota(inscripcion, nuevaNota):
-	Inscripcion.setNota(inscripcion, nuevaNota)
+	def modificarNota(inscripcion, nuevaNota):
+		inscripcion.setNota(nuevaNota)
 
-def eliminarNota(inscripcion):
-	Inscripcion.setNota(inscripcion, -1)
+	def eliminarNota(inscripcion):
+		inscripcion.setNota(-1)

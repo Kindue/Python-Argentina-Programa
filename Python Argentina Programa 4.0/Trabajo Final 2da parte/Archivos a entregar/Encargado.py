@@ -27,23 +27,23 @@ class Encargado:
 			dicInscripciones[fecha + alumno + materia] = nuevaInscripcion
 		
 	def eliminarInscripcion(inscripcion, dicInscripciones):
-		dicInscripciones.pop(Inscripcion.getFecha(inscripcion) + \
-			Inscripcion.getAlumno(inscripcion) + Inscripcion.getMateria(inscripcion))
+		dicInscripciones.pop(inscripcion.getFecha() + \
+			inscripcion.getAlumno() + inscripcion.getMateria())
 		
 	def modificarFecha(inscripcion, nuevaFecha):
-		Inscripcion.setFecha(inscripcion, nuevaFecha)
+		inscripcion.setFecha(nuevaFecha)
 
 	def modificarAlumno(inscripcion, nuevoAlumno):
-		Inscripcion.setAlumno(inscripcion, nuevoAlumno)
+		inscripcion.setAlumno(nuevoAlumno)
 
 	def modificarMateria(inscripcion, nuevaMateria):
-		Inscripcion.setMateria(inscripcion, nuevaMateria)
+		inscripcion.setMateria(nuevaMateria)
 
 	def modificarProfesor(inscripcion, nuevoProfesor):
-		Inscripcion.setProfesor(inscripcion, nuevoProfesor)
+		inscripcion.setProfesor(nuevoProfesor)
 
 	def modificarCurso(inscripcion, nuevoCurso):
-		Inscripcion.setCurso(inscripcion, nuevoCurso)
+		inscripcion.setCurso(nuevoCurso)
 
 	def modificarDivision(inscripcion, nuevaDivision):
-		Inscripcion.setDivision(inscripcion, nuevaDivision)
+		inscripcion.setDivision(nuevaDivision)

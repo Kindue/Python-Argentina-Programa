@@ -23,7 +23,7 @@ dentroRango = lambda x, y, n: x <= n <= y
 dentroCircunferencia = lambda x, y, centroX, centroY, radio: (x-centroX)**2 + (y-centroY)**2 <= radio**2
 areaTriangulo = lambda b, h: (b * h) / 2
 areaCuadrado = lambda l: l * 2
-ordenaLista = lambda l: l.sort()
+ordenaLista = lambda b, l: l.sort() if(b) else l.sort().reverse()
 
 print("El doble de 3,5 es:", dobleDeN(3.5))
 print("¿El 7 es impar?", esImpar(7))

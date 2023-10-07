@@ -10,8 +10,9 @@
 #Los archivos de texto 'Profesores' y 'Encargados' deben estar en el mismo
 #directorio que el programa para que funcione correctamente.
 
-import Encargado
-import Profesor
+from Encargado import Encargado
+from Profesor import Profesor
+from Inscripcion import Inscripcion
 import os
 import time
 
@@ -35,8 +36,7 @@ def cargarProfesores():																				#Lee el archivo proporcionado por
 	for linea in texto:
 		linea = linea.rstrip("\n")
 		lineaString = linea.split(",")
-		dicProfesores[lineaString[0] + lineaString[1]] = Profesor.crearProfesor(lineaString[0],\
-		 lineaString[1], lineaString[2], lineaString[3])
+		dicProfesores[lineaString[0] + lineaString[1]] =  Profesor(lineaString[0], lineaString[1], lineaString[2], lineaString[3])
 
 def cargarEncargados():																				#Lee el archivo proporcionado por
 	archivo = open("Encargados.txt", "r")															#la institucion y cargo los datos
@@ -46,27 +46,28 @@ def cargarEncargados():																				#Lee el archivo proporcionado por
 	for linea in texto:
 		linea = linea.rstrip("\n")
 		lineaString = linea.split(",")
-		dicEncargados[lineaString[1]] = Encargado.crearEncargado(lineaString[0], lineaString[1])
+		dicEncargados[lineaString[0] + lineaString[1]] = Encargado(lineaString[0], lineaString[1])
 
-def cargarInscripciones():																			#Lee el archivo creado por el programa
-	archivo = open("Inscripciones.txt", "r")														#y almacena los datos en un
-	texto = archivo.readlines()																		#diccionario de inscripciones
-	archivo.close()																					#que sera modificado durante la
-	dicInscripciones.clear()																		#ejecucion del programa principal
-	for linea in texto:
-		linea = linea.rstrip("\n")
-		listaString = linea.split(",")
-		Encargado.incorporarInscripcion(listaString[0], listaString[1], listaString[2], listaString[3],\
-		 listaString[4], listaString[5], dicInscripciones)
-
-def toString(inscripcion):			#Convierte una inscripcion a un string con el formato de una inscripcion en el archivo de texto creado por el programa
-	return (str(inscripcion["fecha"]) + "," + inscripcion["alumno"] + "," + inscripcion["materia"] + "," + inscripcion["profesor"] + "," + str(inscripcion["curso"]) + "," + str(inscripcion["division"]) + "," + str(inscripcion["nota"]))											#inscripcion en el archivo de texto
+def cargarInscripciones():
+	try:																			#Lee el archivo creado por el programa
+		archivo = open("Inscripciones.txt", "r")														#y almacena los datos en un
+		texto = archivo.readlines()																		#diccionario de inscripciones
+		archivo.close()																					#que sera modificado durante la
+		dicInscripciones.clear()																		#ejecucion del programa principal
+		for linea in texto:
+			linea = linea.rstrip("\n")
+			listaString = linea.split(",")
+			dicInscripciones[listaString[0] + listaString[1] + listaString[2]] = Inscripcion(listaString[0], listaString[1],\
+			listaString[2], listaString[3], listaString[4], listaString[5], listaString[6])
+	except FileNotFoundError:
+		archivo = open("Inscripciones.txt", "w")
+		archivo.close()
 
 def actualizarInsEnTXT():												#Actualiza el archivo de texto 'Inscripciones'
 	archivo = open("Inscripciones.txt", "w")							#segun los cambios hechos sobre el diccionario
 																		#de inscripciones
 	for inscripcion in dicInscripciones.values():						#Junto con la carga de inscripciones, el archivo TXT se
-		archivo.write(toString(inscripcion))							#actualiza cada vez que el usuario vuelve hacia atras en un menu
+		archivo.write(str(inscripcion))									#actualiza cada vez que el usuario vuelve hacia atras en un menu
 		archivo.write("\n")
 
 	archivo.close()
@@ -79,19 +80,16 @@ def validarProfesor(clave):									#Valida un profesor chequeando
 		print("Error, no existe un profesor con los datos ingresados")
 	return aRet 
 
-def validarEncargado(DNI):									#Valida un encargado chequeando
+def validarEncargado(clave):								#Valida un encargado chequeando
 	aRet = False											#si pertenece al diccionario
-	if(str(DNI) in dicEncargados.keys()):					#de encargados
+	if(clave in dicEncargados.keys()):						#de encargados
 		aRet = True
 	else:
 		print("Error, no existe un encargado con los datos ingresados")
 	return aRet
 
-def validarDNI(DNI):										#Valida un DNI chequeando
-	aRet = False											#si el DNI tiene 7 u 8
-	if(7 <= len(DNI) <= 8):									#numeros
-		aRet = True
-	return aRet
+def validarDNI(DNI):										#Valida un DNI chequeando										#si el DNI tiene 7 u 8
+	return(7 <= len(DNI) <= 8)								#si el DNI tiene 7 u 8 numeros
 
 def validarFecha(fecha):									#Valida una fecha chequeando que la fecha tenga
 	aRet = False											#1 o 2 numeros del 1 al 31 para el dia
@@ -127,12 +125,6 @@ def cargarArchivos():
 		print("Presiones 'ENTER' para salir")
 		input()
 	else:
-		try:
-			cargarInscripciones()													#Si es la primera vez que se ejecuta el programa, el
-		except FileNotFoundError:													#archivo de inscripciones se crea. Si no, se cargan
-			archivo = open("Inscripciones.txt", "w")								#las inscripciones del archivo en un diccionario
-			archivo.close()
-		finally:
 			aRet = True
 	return aRet
 
@@ -211,12 +203,14 @@ def mVerificacionEncargados():
 		print("--"*40)											#y luego revisando el DNI en las claves del diccionario
 		print("Ingrese su DNI:")								#de encargados
 		DNI = input()
-		if(validarDNI(DNI) and validarEncargado(DNI)):
+		print("Ingrese su nombre:")
+		nombre = input()
+		if(validarDNI(DNI) and validarEncargado(nombre + DNI)):
 			limpiar_pantalla()
 			print("--"*40)
 			print("INGRESO EXITOSO")
 			loopEncargado = False
-			return True
+			return Encargado(nombre, DNI)
 		else:
 			print("Intente otra vez ingresando cualquier tecla, o '0' para volver al menu principal")
 			opAux = input()
@@ -236,13 +230,17 @@ def mVerficacionProfesores():
 		nombre = input()
 		print("Ingrese la materia que dicta:")
 		materia = input()
-		if(validarProfesor(nombre+materia)):
+		print("Ingrese su curso:")
+		curso = input()
+		print("Ingrese su division:")
+		division = input()
+		if(validarProfesor(nombre+materia+curso+division)):
 			loopProfesor = False
 			print("--"*40)
 			print("INGRESO EXITOSO")
 			print("--"*40)
 			time.sleep(1)
-			return True
+			return Profesor(nombre, materia, curso, division)
 		else:
 			print("Intente otra vez ingresando cualquier tecla, o '0' para volver al menu principal")
 			opAux = input()
@@ -253,7 +251,7 @@ def mVerficacionProfesores():
 			time.sleep(1)
 	limpiar_pantalla()
 
-def cInscripcion():																	#Crea una nueva inscripcion si los datos ingresados
+def cInscripcion(encargado):																	#Crea una nueva inscripcion si los datos ingresados
 	loopOpEncargado = True															#son correctos
 	while(loopOpEncargado):											
 		print("Ingrese la fecha de la nueva inscripcion con el formato DD/MM/YY:")
@@ -267,11 +265,11 @@ def cInscripcion():																	#Crea una nueva inscripcion si los datos ing
 		print("Ingrese el curso de la nueva inscripcion:")					#Los cursos y divisiones deben ser numeros
 		curso = int(input())
 		print("Ingrese la division de la nueva inscripcion")
-		division = int(input())
+		division = input()
 		limpiar_pantalla()
 		if(validarFecha(fecha)):											#Si la fecha ingresada es valida, consulto si la inscripcion
 			if((fecha+alumno+materia) not in dicInscripciones.keys()):		#existe o no en el diccionario de inscripciones											
-				Encargado.incorporarInscripcion(fecha, alumno, materia, profesor, curso, division, dicInscripciones)
+				encargado.incorporarInscripcion(fecha, alumno, materia, profesor, curso, division, dicInscripciones)
 				print("Incorporacion de inscripcion exitosa! Volviendo al menu anterior") 				#Si no existe almaceno una nueva
 			else:																						#inscripcion
 				print("Error, inscripcion ya almacenada")
@@ -316,14 +314,14 @@ def mValidarIns():															#Valido una inscripcion para su modificacion o 
 		limpiar_pantalla()
 	return claveInscripcion
 
-def modFecha(claveInscripcion):														#Modifico la fecha en una inscripcion
+def modFecha(claveInscripcion, encargado):														#Modifico la fecha en una inscripcion
 	loopOpModificacion = True														#ingresada y validada anteriormente
 	while(loopOpModificacion):														#Esta tarea se realiza desde el menu de encargados
 		print("Ingrese una nueva fecha para modificar la inscripcion ingresada anteriormente con el formato DD/MM/YY:")
 		nuevaFecha = input()
 		if(validarFecha(nuevaFecha)):
 			limpiar_pantalla()
-			Encargado.modificarFecha(dicInscripciones[claveInscripcion], nuevaFecha)
+			encargado.modificarFecha(dicInscripciones[claveInscripcion], nuevaFecha)
 			print("Fecha en la inscripcion modificada con exito!")
 			print("--"*40)
 			loopOpModificacion = False
@@ -336,43 +334,43 @@ def modFecha(claveInscripcion):														#Modifico la fecha en una inscripci
 			print("--"*40)
 		limpiar_pantalla()
 
-def modAlumno(claveInscripcion):												#Modifico el nombre de un alumno en una inscripcion
+def modAlumno(claveInscripcion, encargado):												#Modifico el nombre de un alumno en una inscripcion
 	limpiar_pantalla()															#ingresada y validada anteriormente
 	print("Ingrese el nuevo nombre del alumno para modificar la inscripcion ingresada anteriormente:")
 	nuevoAlumno = input()
 	print("--"*40)																#Esta tarea se realiza desde el menu de encargados
 	limpiar_pantalla()
-	Encargado.modificarAlumno(dicInscripciones[claveInscripcion], nuevoAlumno)
+	encargado.modificarAlumno(dicInscripciones[claveInscripcion], nuevoAlumno)
 	print("Nombre del alumno en la inscripcion modificado con exito!")
 	print("--"*40)
 	time.sleep(1)
 	limpiar_pantalla()
 
-def modMateria(claveInscripcion):												#Modifico la materia en una inscripcion
+def modMateria(claveInscripcion, encargado):												#Modifico la materia en una inscripcion
 	limpiar_pantalla()															#ingresada y validada anteriormente
 	print("Ingrese la nueva materia para modificar la inscripcion ingresada anteriormente:")
 	nuevaMateria = input()
 	print("--"*40)																#Esta tarea se realiza desde el menu de encargados
 	limpiar_pantalla()
-	Encargado.modificarMateria(dicInscripciones[claveInscripcion], nuevaMateria)
+	encargado.modificarMateria(dicInscripciones[claveInscripcion], nuevaMateria)
 	print("Materia en la inscripcion modificada con exito!")
 	print("--"*40)
 	time.sleep(1)
 	limpiar_pantalla()
 
-def modProfesor(claveInscripcion):												#Modifico el profesor en una inscripcion
+def modProfesor(claveInscripcion, encargado):												#Modifico el profesor en una inscripcion
 	limpiar_pantalla()															#ingresada y validada anteriormente
 	print("Ingrese el nuevo nombre del profesor para modificar la inscripcion ingresada anteriormente:")
 	nuevoProfesor = input()
 	print("--"*40)																#Esta tarea se realiza desde el menu de encargados
 	limpiar_pantalla()
-	Encargado.modificarProfesor(dicInscripciones[claveInscripcion], nuevoProfesor)
+	encargado.modificarProfesor(dicInscripciones[claveInscripcion], nuevoProfesor)
 	print("Nombre del profesor en la inscripcion modificado con exito!")
 	print("--"*40)
 	time.sleep(1)
 	limpiar_pantalla()
 
-def modCurso(claveInscripcion):													#Modifico el curso en una inscripcion
+def modCurso(claveInscripcion, encargado):													#Modifico el curso en una inscripcion
 	loopOpModificacion = True													#ingresada y validada anteriormente
 	while(loopOpModificacion):													#Esta tarea se realiza desde el menu de encargados
 		try:																	#Los cursos y divisiones solo pueden ser numeros
@@ -390,39 +388,29 @@ def modCurso(claveInscripcion):													#Modifico el curso en una inscripcio
 			print("--"*40)
 		else:
 			limpiar_pantalla()
-			Encargado.modificarCurso(dicInscripciones[claveInscripcion], nuevoCurso)
+			encargado.modificarCurso(dicInscripciones[claveInscripcion], nuevoCurso)
 			print("Curso en la inscripcion modificado con exito!")
 			loopOpModificacion = False
 			print("--"*40)
 		time.sleep(1)
 		limpiar_pantalla()
 
-def modDivision(claveInscripcion):														#Modifico la division en una inscripcion
+def modDivision(claveInscripcion, encargado):														#Modifico la division en una inscripcion
 	loopOpModificacion = True															#ingresada y validada anteriormente
 	while(loopOpModificacion):															#Esta tarea se realiza desde el menu de encargados
-		try:
-			limpiar_pantalla()
-			print("Ingrese el nuevo numero de division para modificar la inscripcion ingresada anteriormente:")
-			nuevaDivision = int(input())
-			print("--"*40)
-		except ValueError:
-			limpiar_pantalla()
-			print("Error, division no valida!")
-			print("Intente otra vez ingresando cualquier tecla, o '0' para volver al menu de modificacion de inscripcion")
-			opEncargado = input()
-			if(opEncargado == '0'):
-				loopOpModificacion = False
-			print("--"*40)
-		else:
-			limpiar_pantalla()
-			Encargado.modificarDivision(dicInscripciones[claveInscripcion], nuevaDivision)
-			print("Division en la inscripcion modificada con exito!")
-			loopOpModificacion = False
-			print("--"*40)
+		limpiar_pantalla()
+		print("Ingrese la nueva division para modificar la inscripcion ingresada anteriormente:")
+		nuevaDivision = input()
+		print("--"*40)
+		limpiar_pantalla()
+		encargado.modificarDivision(dicInscripciones[claveInscripcion], nuevaDivision)
+		print("Division en la inscripcion modificada con exito!")
+		loopOpModificacion = False
+		print("--"*40)
 		time.sleep(1)
 		limpiar_pantalla()
 
-def modNota(claveInscripcion):
+def modNota(claveInscripcion, profesor):
 	loopOpModificacion = True											#Modifico la nota en una inscripcion
 	while(loopOpModificacion):											#ingresada y validada anteriormente
 		limpiar_pantalla()												#Esta tarea se realiza desde el menu de profesores
@@ -449,13 +437,13 @@ def modNota(claveInscripcion):
 			print("--"*40)
 		else:
 			limpiar_pantalla()											#Si la nota es valida, modifico la nota de la inscripcion en el diccionario
-			Profesor.modificarNota(dicInscripciones[claveInscripcion], nuevaNota)
+			profesor.modificarNota(dicInscripciones[claveInscripcion], nuevaNota)
 			print("Nota en la inscripcion ingresada modificada con exito!")
 			loopOpModificacion = False
 		time.sleep(1)
 		limpiar_pantalla()
 
-def eInscripcion():
+def eInscripcion(encargado):
 	loopOpEncargado = True
 	while(loopOpEncargado):																#Pido los datos de una inscripcion																	#y los valido
 		limpiar_pantalla()
@@ -469,7 +457,7 @@ def eInscripcion():
 		if(validarFecha(fecha)):
 			limpiar_pantalla()
 			if(fecha+alumno+materia in dicInscripciones.keys()):											#Si hay una inscripcion con los datos
-				Encargado.eliminarInscripcion(dicInscripciones[fecha+alumno+materia], dicInscripciones) 	#ingresados la elimino
+				encargado.eliminarInscripcion(dicInscripciones[fecha+alumno+materia], dicInscripciones) 	#ingresados la elimino
 				print("La inscripcion ingresada fue eliminada con exito! volviendo al menu de encargados")
 			else:																							#Si no la hay muestro un mensaje de error
 				print("Error, la inscripcion ingresada no pertenece al sistema")
@@ -485,8 +473,8 @@ def eInscripcion():
 			print("--"*40)
 		limpiar_pantalla()
 
-def eNota(claveInscripcion):														#Elimino una nota, insertando un '-1' en el campo
-	Profesor.eliminarNota(dicInscripciones[claveInscripcion])						#de la nota de la inscripcion ingresada anteriormente
+def eNota(claveInscripcion, profesor):														#Elimino una nota, insertando un '-1' en el campo
+	profesor.eliminarNota(dicInscripciones[claveInscripcion])						#de la nota de la inscripcion ingresada anteriormente
 	print("La nota de la inscripcion ingresada fue eliminada con exito! Volviendo al menu de profesores")
 	time.sleep(1)
 	limpiar_pantalla()
@@ -499,13 +487,14 @@ if(cargarArchivos()):
 	while(loopPrincipal):
 		opcionPrincipal = mPrincipal()
 		if(opcionPrincipal == '1'):	
-			ingreso = mVerificacionEncargados()
-			if(ingreso):						
+			encargadoActual = mVerificacionEncargados()
+			if(encargadoActual != None):
+				cargarInscripciones()						
 				loopMenuEncargado = True
 				while(loopMenuEncargado):																				
 					opcionEncargado = mEncargados()
 					if(opcionEncargado == '1'):										
-						cInscripcion()
+						cInscripcion(encargadoActual)
 					elif(opcionEncargado == '2'):	
 						inscripcionAModificar = mValidarIns()
 						if(inscripcionAModificar != ''):
@@ -513,17 +502,17 @@ if(cargarArchivos()):
 							while(loopOpEncargado):
 								opEncargadoMod = mEncModif()
 								if(opEncargadoMod == '1'):
-									modFecha(inscripcionAModificar)
+									modFecha(inscripcionAModificar, encargadoActual)
 								elif(opEncargadoMod == '2'):
-									modAlumno(inscripcionAModificar)
+									modAlumno(inscripcionAModificar, encargadoActual)
 								elif(opEncargadoMod == '3'):
-									modMateria(inscripcionAModificar)
+									modMateria(inscripcionAModificar, encargadoActual)
 								elif(opEncargadoMod == '4'):
-									modProfesor(inscripcionAModificar)
+									modProfesor(inscripcionAModificar, encargadoActual)
 								elif(opEncargadoMod == '5'):
-									modCurso(inscripcionAModificar)
+									modCurso(inscripcionAModificar, encargadoActual)
 								elif(opEncargadoMod == '6'):
-									modDivision(inscripcionAModificar)
+									modDivision(inscripcionAModificar, encargadoActual)
 								elif(opEncargadoMod == '0'):
 									limpiar_pantalla()		
 									print("Volviendo al menu de encargados!")
@@ -538,7 +527,7 @@ if(cargarArchivos()):
 									print("--"*40)
 									time.sleep(1)
 					elif(opcionEncargado == '3'):	
-						eInscripcion()
+						eInscripcion(encargadoActual)
 					elif(opcionEncargado == '0'):
 						limpiar_pantalla()	
 						print("Volviendo al menu principal!")
@@ -552,19 +541,20 @@ if(cargarArchivos()):
 						print("Error al ingresar una opcion valida, intente de nuevo!")	
 						time.sleep(1)
 		elif(opcionPrincipal == '2'):
-			ingreso = mVerficacionProfesores()
-			if(ingreso):
+			profesorActual = mVerficacionProfesores()
+			if(profesorActual != None):
+				cargarInscripciones()
 				loopMenuProfesor = True
 				while(loopMenuProfesor):
 					opcionProfesor = mProfesores()	
 					if(opcionProfesor == '1'):
 						inscripcionAModificar = mValidarIns()
 						if(inscripcionAModificar != ''):
-							modNota(inscripcionAModificar)
+							modNota(inscripcionAModificar, profesorActual)
 					elif(opcionProfesor == '2'):
 						inscripcionAEliminar = mValidarIns()
 						if(inscripcionAEliminar != ''):
-							eNota(inscripcionAEliminar)	
+							eNota(inscripcionAEliminar, profesorActual)	
 					elif(opcionProfesor == '0'):
 						limpiar_pantalla()	
 						print("Volviendo al menu principal!")
