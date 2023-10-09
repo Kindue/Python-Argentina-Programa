@@ -69,7 +69,7 @@ def validarEncargado(clave):								#Valida un encargado chequeando
 	return aRet
 
 def validarDNI(DNI):										#Valida un DNI chequeando										#si el DNI tiene 7 u 8
-	return(7 <= len(DNI) <= 8)								#si el DNI tiene 7 u 8 numeros
+	return(7 <= len(str(DNI)) <= 8)								#si el DNI tiene 7 u 8 numeros
 
 def validarFecha(fecha):									#Valida una fecha chequeando que la fecha tenga
 	aRet = False											#1 o 2 numeros del 1 al 31 para el dia

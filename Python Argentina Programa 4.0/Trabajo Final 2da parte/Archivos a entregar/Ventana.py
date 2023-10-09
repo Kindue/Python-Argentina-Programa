@@ -21,7 +21,6 @@ class MenuPrincipal:
         self.salirBoton.place(relx=0.5, rely=0.8, anchor="center", width=200, height=50)
 
     def validacion(self, tipo):
-        # Create a popup window that asks for user data
         aRet = False
         respuesta = ""
         root.attributes("-topmost", False)
@@ -31,11 +30,15 @@ class MenuPrincipal:
             if(nombre == None or DNI == None):
                 respuesta = mb.showerror("Error", "No se ingresaron todos los datos")
             else:
-                if(validarEncargado(nombre+str(DNI))):
-                    respuesta = mb.showinfo("Ingreso Exitoso", "Ingreso Exitoso")
-                    aRet = True
+                if(validarDNI(DNI)):
+                    if(validarEncargado(nombre+str(DNI))):
+                        respuesta = mb.showinfo("Ingreso Exitoso", "Ingreso Exitoso")
+                        aRet = True
+                        usuarioActivo = Encargado(nombre, DNI)
+                    else:
+                        respuesta = mb.showerror("Error", "El encargado ingresado no existe")
                 else:
-                    respuesta = mb.showerror("Error", "El encargado ingresado no existe")   
+                    respuesta = mb.showerror("Error", "El DNI ingresado no es valido")   
         else:
             materia = sd.askstring("Ingresar datos", "Ingrese la materia que dicta:")
             curso = sd.askinteger("Ingresar datos", "Ingrese su curso:")
@@ -43,9 +46,10 @@ class MenuPrincipal:
             if(nombre == None or materia == None or curso == None or division == None):
                 respuesta = mb.showerror("Error", "No se ingresaron todos los datos")
             else:
-                if(validarProfesor(nombre+materia+str(curso)+str(division))):
+                if(validarProfesor(nombre+materia)):
                     respuesta = mb.showinfo("Ingreso Exitoso", "Ingreso Exitoso")
                     aRet = True
+                    usuarioActivo = Profesor(nombre, materia, curso, division)
                 else:
                     respuesta = mb.showerror("Error", "El profesor ingresado no existe")
         root.attributes("-topmost", False)
@@ -55,59 +59,108 @@ class MenuPrincipal:
         if(self.validacion("Encargado")):
             self.master.withdraw()
             self.nuevaVentana = tk.Toplevel(self.master)
-            self.app = EncargadosWindow(self.nuevaVentana)
+            self.app = MenuEncargado(self.nuevaVentana)
 
     def menuProfesores(self):
         if(self.validacion("Profesor")):
             self.master.withdraw()
             self.nuevaVentana = tk.Toplevel(self.master)
-            self.app = ProfesoresWindow(self.nuevaVentana)
+            self.app = MenuProfesor(self.nuevaVentana)
 
-class EncargadosWindow:
+
+class MenuEncargado:
     def __init__(self, master):
         self.master = master
         master.title("Menu de Encargados")
-        master.geometry("300x300")
+        master.geometry(f"300x300+{master.winfo_screenwidth()//2-150}+{master.winfo_screenheight()//2-150}")
         master.resizable(False, False)
-        master.eval('tk::PlaceWindow . center')
 
-        # self.volverBoton = tk.Button(master, text="Crear una inscripción", command=self.cerrarVentana)
-        # self.volverBoton.pack()
+        self.volverBoton = tk.Button(master, text="Crear una inscripción", command=self.crearInscripcion)
+        self.volverBoton.pack()
 
-        # self.volverBoton = tk.Button(master, text="Modificar una inscripción", command=self.cerrarVentana)
-        # self.volverBoton.pack()
+        self.volverBoton = tk.Button(master, text="Modificar una inscripción", command=self.modificarInscripcion)
+        self.volverBoton.pack()
 
-        # self.volverBoton = tk.Button(master, text="Eliminar una inscripción", command=self.cerrarVentana)
-        # self.volverBoton.pack()
+        self.volverBoton = tk.Button(master, text="Eliminar una inscripción", command=self.eliminarInscripcion)
+        self.volverBoton.pack()
 
         self.volverBoton = tk.Button(master, text="Volver", command=self.cerrarVentana)
         self.volverBoton.pack()
 
-        # Add more buttons with functionality here
+    def crearInscripcion(self):
+        fecha = sd.askstring("Ingresar datos", "Ingrese la fecha de la nueva inscripcion:")
+        alumno = sd.askstring("Ingresar datos", "Ingrese el nombre del alumno de la nueva inscripcion:")
+        materia = sd.askstring("Ingresar datos", "Ingrese la materia de la nueva inscripcion:")
+        profesor = sd.askstring("Ingresar datos", "Ingrese el profesor de la nueva inscripcion:")
+        curso = sd.askinteger("Ingresar datos", "Ingrese el curso de la nueva inscripcion:")
+        division = sd.askstring("Ingresar datos", "Ingrese la division de la nueva inscripcion:")
+        if(validarFecha(fecha)):
+            if((fecha+alumno+materia) not in dicInscripciones.keys()):
+                usuarioActivo.incorporarInscripcion(fecha, alumno, materia, profesor, curso, division, dicInscripciones)
+            else:
+                mb.showerror("Error", "Ya existe una inscripcion con esos datos")
+        else:
+            mb.showerror("Error", "La fecha ingresada no es valida")
+
+    def modificarInscripcion(self):
+        self.master.withdraw()
+        self.nuevaVentana = tk.Toplevel(self.master)
+        self.app = MenuModificacion(self.nuevaVentana, self.master)
+
+    def eliminarInscripcion(self):
+        fecha = sd.askstring("Ingresar datos", "Ingrese la fecha de la inscripcion a eliminar:")
+        alumno = sd.askstring("Ingresar datos", "Ingrese el nombre del alumno de la inscripcion a eliminar:")
+        materia = sd.askstring("Ingresar datos", "Ingrese la materia de la inscripcion a eliminar:")
+        if(validarFecha(fecha)):
+            if((fecha+alumno+materia) in dicInscripciones.keys()):
+                usuarioActivo.eliminarInscripcion(fecha, alumno, materia, dicInscripciones)
+            else:
+                mb.showerror("Error", "No existe una inscripcion con esos datos")
+        else:
+            mb.showerror("Error", "La fecha ingresada no es valida")
+
 
     def cerrarVentana(self):
         self.master.destroy()
         root.deiconify()
 
-class ProfesoresWindow:
+class MenuProfesor:
     def __init__(self, master):
         self.master = master
         master.title("Menu de Profesores")
-        master.geometry("300x300")
+        master.geometry(f"300x300+{master.winfo_screenwidth()//2-150}+{master.winfo_screenheight()//2-150}")
         master.resizable(False, False)
-        master.eval('tk::PlaceWindow . center')
 
         self.volverBoton = tk.Button(master, text="Volver", command=self.cerrarVentana)
         self.volverBoton.pack()
 
-        # Add more buttons with functionality here
-
     def cerrarVentana(self):
         self.master.destroy()
-        root.deiconify()
+        self.main_window.deiconify()
+
+class MenuModificacion:
+    def __init__(self, master):
+        self.master = master
+        master.title("Modificacion de inscripciones")
+        master.geometry(f"300x300+{master.winfo_screenwidth()//2-150}+{master.winfo_screenheight()//2-150}")
+        master.resizable(False, False)
+
+        self.volverBoton = tk.Button(master, text="Crear una inscripción", command=self.crearInscripcion)
+        self.volverBoton.pack()
+
+        self.volverBoton = tk.Button(master, text="Modificar una inscripción", command=self.modificarInscripcion)
+        self.volverBoton.pack()
+
+        self.volverBoton = tk.Button(master, text="Eliminar una inscripción", command=self.eliminarInscripcion)
+        self.volverBoton.pack()
+
+        self.volverBoton = tk.Button(master, text="Volver", command=self.cerrarVentana)
+        self.volverBoton.pack()
+        # Ingrese la inscripcion a modificar
 
 cargarProfesores()
 cargarEncargados()
+usuarioActivo = None
 root = tk.Tk()
 root.geometry("300x300")
 root.resizable(False, False)
