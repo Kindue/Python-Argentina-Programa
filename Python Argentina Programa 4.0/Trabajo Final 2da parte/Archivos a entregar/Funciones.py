@@ -19,7 +19,7 @@ def cargarProfesores():																				#Lee el archivo proporcionado por
 		dicProfesores[lineaString[0] + lineaString[1]] =  Profesor(lineaString[0], lineaString[1], lineaString[2], lineaString[3])
 
 def cargarEncargados():																				#Lee el archivo proporcionado por
-	archivo = open("Trabajo Final 2da parte/Archivos a entregar/Profesores.txt", "r")															#la institucion y cargo los datos
+	archivo = open("Trabajo Final 2da parte/Archivos a entregar/Encargados.txt", "r")															#la institucion y cargo los datos
 	texto = archivo.readlines()																		#en un diccionario de profesores
 	archivo.close()																					#para facilitar la validacion
 
