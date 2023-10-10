@@ -2,7 +2,7 @@
 #Modela a un encargado para el sistema. Un encargado puede crear y eliminar inscripciones
 #Ademas puede modificar cualquier dato de una inscripcion excepto su nota
 
-import Inscripcion
+from Inscripcion import Inscripcion
 
 class Encargado:
 	def __init__(self, nombre, dni):
@@ -21,29 +21,28 @@ class Encargado:
 	def setDNI(self, nuevoDNI):
 		self._dni = nuevoDNI
 
-	def incorporarInscripcion(fecha, alumno, materia, profesor, curso, division, dicInscripciones):
+	def incorporarInscripcion(self, fecha, alumno, materia, profesor, curso, division, dicInscripciones):
 		nuevaInscripcion = Inscripcion(fecha, alumno, materia, profesor, curso, division)
 		if(nuevaInscripcion not in dicInscripciones.values()):
 			dicInscripciones[fecha + alumno + materia] = nuevaInscripcion
 		
-	def eliminarInscripcion(inscripcion, dicInscripciones):
-		dicInscripciones.pop(inscripcion.getFecha() + \
-			inscripcion.getAlumno() + inscripcion.getMateria())
+	def eliminarInscripcion(self, inscripcion, dicInscripciones):
+		dicInscripciones.pop(inscripcion.getFecha() + inscripcion.getAlumno() + inscripcion.getMateria())
 		
-	def modificarFecha(inscripcion, nuevaFecha):
+	def modificarFecha(self, inscripcion, nuevaFecha):
 		inscripcion.setFecha(nuevaFecha)
 
-	def modificarAlumno(inscripcion, nuevoAlumno):
+	def modificarAlumno(self, inscripcion, nuevoAlumno):
 		inscripcion.setAlumno(nuevoAlumno)
 
-	def modificarMateria(inscripcion, nuevaMateria):
+	def modificarMateria(self, inscripcion, nuevaMateria):
 		inscripcion.setMateria(nuevaMateria)
 
-	def modificarProfesor(inscripcion, nuevoProfesor):
+	def modificarProfesor(self, inscripcion, nuevoProfesor):
 		inscripcion.setProfesor(nuevoProfesor)
 
-	def modificarCurso(inscripcion, nuevoCurso):
+	def modificarCurso(self, inscripcion, nuevoCurso):
 		inscripcion.setCurso(nuevoCurso)
 
-	def modificarDivision(inscripcion, nuevaDivision):
+	def modificarDivision(self, inscripcion, nuevaDivision):
 		inscripcion.setDivision(nuevaDivision)

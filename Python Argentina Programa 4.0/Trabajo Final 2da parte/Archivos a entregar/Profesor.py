@@ -4,7 +4,6 @@
 #de una inscripcion. Estas funciones solo sirven si el profesor dicta
 #la misma materia que la inscripcion que desee editar
 
-import Inscripcion
 
 class Profesor:
 	def __init__(self, nombre, materia, curso, division):
@@ -37,8 +36,8 @@ class Profesor:
 	def setDivision(self, nuevaDivision):
 		self._division = nuevaDivision
 
-	def modificarNota(inscripcion, nuevaNota):
+	def modificarNota(self, inscripcion, nuevaNota):
 		inscripcion.setNota(nuevaNota)
 
-	def eliminarNota(inscripcion):
+	def eliminarNota(self, inscripcion):
 		inscripcion.setNota(-1)
