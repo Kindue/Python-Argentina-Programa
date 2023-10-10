@@ -64,9 +64,13 @@ class mProfesor:
         clave = preguntarClave()
         if(clave != None):
             if(validarInscripcion(clave)):
-                self.profesor.eliminarNota(dicInscripciones[clave])
-                actTXTCargarDic()
-                self.actualizarPanelInscripciones()
+                if(dicInscripciones[clave].getMateria() == self.profesor.getMateria() and \
+                   dicInscripciones[clave].getProfesor() == self.profesor.getNombre()):
+                    self.profesor.eliminarNota(dicInscripciones[clave])
+                    actTXTCargarDic()
+                    self.actualizarPanelInscripciones()
+                else:
+                    mb.showerror("Error", "Usted no es el profesor a cargo de la inscripcion ingresada")
             else:
                 mb.showerror("Error", "No existe una inscripcion con esos datos")
         else:

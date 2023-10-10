@@ -62,11 +62,11 @@ class mEncargado:
 
     def modificarInscripcion(self):
         clave = preguntarClave()
-        if(clave != None):
+        if(clave != None and clave in dicInscripciones.keys()):
             if(validarInscripcion(clave)):
                 self.master.withdraw()
                 self.nuevaVentana = tk.Toplevel(self.master)
-                self.app = mModificacion(self.nuevaVentana, self.master, dicInscripciones[clave], self.encargado)
+                self.app = mModificacion(self.nuevaVentana, self.master, dicInscripciones[clave], self.encargado, self)
             else:
                 mb.showerror("Error", "No existe una inscripcion con esos datos")
         else:

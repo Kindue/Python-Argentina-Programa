@@ -108,6 +108,7 @@ def preguntarDatos():
 	division = sd.askstring("Ingresar datos", "Ingrese la division de la nueva inscripcion:")
 	if(fecha == None or alumno == None or materia == None or profesor == None or curso == None or division == None):
 		mb.showerror("Error", "No se ingresaron todos los datos")
+		return None, None, None, None, None, None
 	else:
 		if(not validarFecha(fecha)):
 			mb.showerror("Error", "Fecha invalida")
