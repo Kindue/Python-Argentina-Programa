@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox as mb
 import tkinter.scrolledtext as st
+from PIL import Image, ImageTk
 from Funciones import *
 
 class mProfesor:
@@ -11,12 +12,20 @@ class mProfesor:
         master.title("Menu de Profesores")
         master.geometry(f"900x250+{master.winfo_screenwidth()//2-450}+{master.winfo_screenheight()//2-125}")
         master.resizable(False, False)
+        master.iconbitmap("Trabajo Final 2da parte/Archivos a entregar/imgs/sl.ico")
+        master.attributes("-topmost", True)
+        master.protocol("WM_DELETE_WINDOW", master.quit)
+        
+        #Creo el panel de inscripciones para mostrar las inscripciones actuales
 
         self.panelInscripciones = tk.Frame(master)
         self.panelInscripciones.grid(row=0, column=0, rowspan=3, sticky="nsew")
 
         self.textoInscripciones = st.ScrolledText(self.panelInscripciones, state="disabled")
         self.textoInscripciones.pack(fill="both", expand=True, side="left")
+        self.textoInscripciones.config(font=("Consolas", 12))
+
+        # Creo el panel de botones y sus botones para las opciones del profesor
 
         self.panelBotones = tk.Frame(master)
         self.panelBotones.grid(row=0, column=1, rowspan=3, sticky="nsew")
@@ -31,6 +40,7 @@ class mProfesor:
         self.volverBoton.grid(row=2, column=0, columnspan=2, rowspan=1, sticky="nsew")
 
     # Actualizar el panel de inscripciones con las inscripciones actuales
+
         self.actualizarPanelInscripciones()
 
     def actualizarPanelInscripciones(self):
@@ -39,6 +49,8 @@ class mProfesor:
         for inscripcion in dicInscripciones.values():
             self.textoInscripciones.insert("end", str(inscripcion)+"\n")
         self.textoInscripciones.config(state="disabled")
+
+    # Funciones de los botones
 
     def modificarNota(self):
         clave = preguntarClave()

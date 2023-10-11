@@ -6,4 +6,3 @@ Martín Tocalli,25643981
 Matías Manna,27885213
 Luis Martín,25618191
 Rodrigo Barrios,30427649
-admin,12345678

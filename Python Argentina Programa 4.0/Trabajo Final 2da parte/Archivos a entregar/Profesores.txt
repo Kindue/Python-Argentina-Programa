@@ -24,4 +24,3 @@ Angel Di Maria,Quimica,2,B
 Julian Alvarez,Fisica,2,C
 Paulo Dybala,Ingles,5,A
 Angel Correa,Ingles,2,B
-admin,Lengua,1,a
